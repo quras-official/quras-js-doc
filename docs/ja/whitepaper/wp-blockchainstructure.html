@@ -1,0 +1,568 @@
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>QURASブロックチェーンの構造 · </title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="QURASブロックチェーンの直観的な表象を立てるために次の図を参照する。&lt;br/&gt;"/><meta name="docsearch:language" content="ja"/><meta property="og:title" content="QURASブロックチェーンの構造 · "/><meta property="og:type" content="website"/><meta property="og:url" content="http://13.230.62.42/quras-js/index.html"/><meta property="og:description" content="QURASブロックチェーンの直観的な表象を立てるために次の図を参照する。&lt;br/&gt;"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/quras-js/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/quras-js/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/quras-js/ja"><img class="logo" src="/quras-js/img/logo5.png" alt=""/><h2 class="headerTitleWithLogo"></h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/quras-js/docs/ja/installation.html" target="_self">文書</a></li><li class=""><a href="/quras-js/docs/ja/api-index.html" target="_self">API</a></li><li class="siteNavGroupActive"><a href="/quras-js/docs/ja/whitepaper/wp-introduction.html" target="_self">テクニカルペーパー</a></li><li class=""><a href="/quras-js/docs/ja/changelog-latest.html" target="_self">Changelog</a></li><li class=""><a href="/quras-js/ja/help.html" target="_self">説明</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/quras-js/img/language.svg"/>日本語</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/quras-js/docs/en/whitepaper/wp-blockchainstructure.html">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Contents</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-introduction.html">前書き</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contents</h3><ul><li class="navListItem navListItemActive"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-blockchainstructure.html">QURASブロックチェーンの構造</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-consensusalgorithm.html">QURASブロックチェーンのCONSENSUS アルゴリズム</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-virtualmachine.html">QURASブロックチェーンのVIRTUAL MACHINEの構造</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-cryptomodules.html">QURASブロックチェーンの暗号化モジュール</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-jsonrpc.html">QURASブロックチェーンのJSON-RPC</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Future Projects</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-futureservices.html">FUTUREのプロジェクトおよびサビース</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Reference</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-reference.html">参照</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">QURASブロックチェーンの構造</h1></header><article><div><span><p>QURASブロックチェーンの直観的な表象を立てるために次の図を参照する。<br/>
+<center><img src="/quras-js/img/whitepaper/StructureOfBlockchain.png" alt="/quras-js/img"></center>
+<center>図1. QURASブロックチェーンの直観的な構造</center><br/></p>
+<p>上記の図をみるとブロックチェーンには大きくFull Node、Light Node、Consensus Nodeが存在することになる。</p>
+<p>ブロックチェーンが維持されるためにはConsensus Nodeが存在することが必要である。</p>
+<p>Consensus Nodeはブロックチェーンでブロックを生成していくノードである。</p>
+<p>Consensus NodeでTransactionの検証とSmart Contractの実行が行われる。</p>
+<p>Consensusアルゴリズムについては後で具体的に説明されているからここでは言及しない。</p>
+<p>Full Nodeの役割は発生したTransactionの検証とbroadcastなどを進め、WalletとWebサイトのエンジンとして動作するようになる。</p>
+<p>Full Nodeは現在ZK-SNARKSアルゴリズムが実装されている。</p>
+<p>すなわちすべての類型のTransactionを提供することになる。</p>
+<p>Light NodeはPC用Light Walletで利用するようになる軽量化されたエンジンと見ることができる。</p>
+<p>Light Nodeはブロックチェーンのブロックを全部ダウンロードしないから保存スペースを多く要求しない。</p>
+<p>Light NodeはLight Walletだけで利用されるように設計されているから、不要な機能が無く、Walletに必要な機能だけを実装するとしている。</p>
+<h2><a class="anchor" aria-hidden="true" id="p2p-通信の構造"></a><a href="#p2p-通信の構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>P2P 通信の構造</h2>
+<p>ブロックチェーンは特定のサーバがなくて全てのノードがP2P方式で連結して動作するシステムである。</p>
+<p>つまりQURASブロックチェーンのすべてのノードはP2P方式で通信を進行する。</p>
+<p>この部分ではQURASブロックチェーンのFull Node、Light Node、Consensus Nodeの間に行われている全ての通信構造がどのようになって、どのように反映されるかを具体的に記述することになる。</p>
+<p>ノードの間に行われている全ての通信は全部ここで記述されるようになる。</p>
+<p>QURASブロックチェーンで行われている全ての通信はQurasMessageの通信構造によってすべての通信部分がカプセル化されて進行されるようになる。</p>
+<p>それではQurasMessageの構造を見て個別的な通信部分について説明する。</p>
+<h3><a class="anchor" aria-hidden="true" id="qurasmessageの構造"></a><a href="#qurasmessageの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>QURASMESSAGEの構造</h3>
+<p>QurasMessageの構造は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Network Type(Magic)</td><td>Magicの項目はNetworkのタイプを示しるとしてQuras BlockchainでMainnetとTestnetを区別するための項目になる。</td></tr>
+<tr><td>Command</td><td>メッセージの指令としてこの項目の値によってメッセージの基本使命が分かれるようになる。<br/>Commandに対する説明はの下記で進行する。</td></tr>
+<tr><td>Checksum</td><td>Payloadの項目のChecksumとしてPayloadのが正しいかどうかを区別するために利用される項目である。</td></tr>
+<tr><td>Body (Payload)</td><td>この項目はCommandによってメッセージの基本Body部分と見ることができる。<br/>この項目の構造についてはCommand部分と共に下記で説明する。</td></tr>
+</tbody>
+</table>
+<p><center>表1. QurasMessageの項目</center> <br/></p>
+<p>QURASブロックチェーンで行われている全てのパケットの通信は上記のQurasMessage構造に合わせて進められることになる。</p>
+<p>QURASブロックチェーンのすべてのノードはQurasMessageを受ければ次のような認証を進める。</p>
+<ul>
+<li>ロコルのNetwork TypeとQurasMessageのNetwork Typeを比較して同じ場合には次の段階を遂行し、そうではなければ連結を切ってしまう。</li>
+<li>PayloadのChecksumを計算してQurasMessageのChecksumと比較して同じ場合には次の段階を遂行し、そうではなければ連結を切ってしまう。</li>
+<li>Bodyの項目の長さを検査して、長さが0x2000000より大きい場合は連結を止め、そうではなければPayloadの項目を解釈する。</li>
+</ul>
+<p>QURASブロックチェーンは上記の3種に対する検査を進め、QurasMessageの正確性を検証する。</p>
+<p>それではQURASブロックチェーンの通信メッセージでどのようなCommandがあり、それに該当したBodyの項目はどんな構造を持っているのかについて説明しよう。</p>
+<h4><a class="anchor" aria-hidden="true" id="syn-command"></a><a href="#syn-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SYN Command</h4>
+<p>このメッセージはノードの間に連結を確立するためにノードの情報を交換するメッセージである。</p>
+<p>SYN CommandのBody部分は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Protocol Version</td><td>現在ノードのProtocol Versionとしてノードエンジンの通信部Versionを意味する。</td></tr>
+<tr><td>Module Services (Services)</td><td>この項目は現在QURASブロックチェーンのノードネットワークについた状態を表示している項目である。</td></tr>
+<tr><td>Timestamp</td><td>メッセージが生成された時間を表現する。</td></tr>
+<tr><td>Port</td><td>現在ノードがメッセージの送受信するPortを意味する。</td></tr>
+<tr><td>Nonce</td><td>この項目はメッセージを送ったノードを識別するためにRandomに割り当てられた数値を意味する。</td></tr>
+<tr><td>User Agent</td><td>現在ノードのビルドバージョンを意味する。</td></tr>
+<tr><td>Block Start Height (StartHeight)</td><td>現在ノードのLocalブロックのサイズを意味する。</td></tr>
+<tr><td>Relay</td><td>パケットを伝えるものかどうかを決定している項目である。<br/>一般的にTrueの値に設定する。</td></tr>
+</tbody>
+</table>
+<p><center>表2. Version Commandの項目</center> <br/></p>
+<p>すべてのノードはSYN Commandを通じて該当Remoteノードの状態を知ることができるし、どのノードからブロックをはじめ必要な資料の提供を受けられるかを決定することになる。</p>
+<h4><a class="anchor" aria-hidden="true" id="ack-command"></a><a href="#ack-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ACK Command</h4>
+<p>このメッセージはBody部分がない。</p>
+<p>このメッセージは当該ノードがSYNメッセージを受けた時、回答に送るメッセージである。</p>
+<p>つまりSYNメッセージに対する検証を確認してRemoteノードと連結を確立するという意味で送られるSYNに対する回答メッセージである。</p>
+<h4><a class="anchor" aria-hidden="true" id="getblocks-command"></a><a href="#getblocks-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GetBlocks Command</h4>
+<p>このメッセージは当該ノードがブロックをダウンロードするために送るメッセージである。</p>
+<p>メセジのBodyの項目は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Start</td><td>ダウンロードしようとするブロックの開始ブロックを意味する。</td></tr>
+<tr><td>End</td><td>ダウンロードしようとするブロックの最後ブロックを意味する。</td></tr>
+</tbody>
+</table>
+<p><center>表3. GetBlock Commandの項目</center> <br/></p>
+<p>このメッセージはRemoteノードから自分のロコルブロックチェーンをSyncするために利用されるメッセージとして上記の項目を設定してRemoteノードに送られる。</p>
+<h4><a class="anchor" aria-hidden="true" id="addr-command"></a><a href="#addr-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Addr Command</h4>
+<p>このメッセージは自分と連結されているRemoteノードの情報を要請したノードに送る時利用されるメッセージである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Address List</td><td>自分と連結されているノードの情報をList形式にまとめて送るようになる。</td></tr>
+</tbody>
+</table>
+<p><center>表4. Addr Commandの項目</center> <br/></p>
+<p>この時Address Listの項目の意味は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Module Services</td><td>この項目は現在QURASブロックチェーンのノードのネットワークについた状態を表示している項目である。</td></tr>
+<tr><td>Timestamp</td><td>この項目はロコルノードと連結された時間を意味する。</td></tr>
+<tr><td>Protocol Version</td><td>現在ノードのProtocol Versionとしてノードエンジンの通信部Versionを意味する。</td></tr>
+<tr><td>End Point</td><td>現在ノードのNetwork情報である。つまりIPアドレスとPort番号を意味する。</td></tr>
+</tbody>
+</table>
+<p><center>表5. Address Listの項目</center> <br/></p>
+<p>すなわちすべてのノードはAddrメッセージを受けて他のノードの情報に基づいて連結を確立してQURASブロックチェーンのP2Pに接続を行うことになる。</p>
+<h4><a class="anchor" aria-hidden="true" id="getheaders-command"></a><a href="#getheaders-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GetHeaders Command</h4>
+<p>このメッセージは当該ノードがブロックのHeader部分をダウンロードするためにRemoteノードに送るメッセージである。</p>
+<p>このメッセージのBody部分はGetBlocksメッセージと同じである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Start</td><td>ダウンロードしようとするブロックの開始ブロックを意味する。</td></tr>
+<tr><td>End</td><td>ダウンロードしようとするブロックの最後ブロックを意味する。</td></tr>
+</tbody>
+</table>
+<p><center>表6. GetHeaders Commandの項目</center> <br/></p>
+<p>このメッセージはFullNodeとLightNodeで実装されるようになる。</p>
+<p>特にLightNodeはブロックのHeader部分だけダウンロードしことになる。</p>
+<h4><a class="anchor" aria-hidden="true" id="mempool-command"></a><a href="#mempool-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mempool Command</h4>
+<p>MempoolはノードのTransactionの保存空間を意味する。</p>
+<p>このメッセージは当該RemoteノードとTransactionを同期化するために呼び出されるメッセージである。</p>
+<p>このメッセージはBody部分がない。</p>
+<p>すなわちこのメッセージの用途は、現在発生されたTransactionを同期化する目的で呼び出されるメッセージである。</p>
+<h4><a class="anchor" aria-hidden="true" id="getaddr-command"></a><a href="#getaddr-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GetAddr Command</h4>
+<p>このメッセージは次のような場合利用することになる。</p>
+<p>すべてのノードは自分と連結されたノードの情報をPeerListで保管している。</p>
+<p>それはノードが再起動とか再度インターネットに連結される時再びP2Pブロックのチェーンに連結するためである。</p>
+<p>QURASブロックチェーンはServer/Client方式ではなくP2P方式であるため、全てのノードはどのような特定にサーバに連結されるではなく、任意の複数のノードと連結して一つの大きなP2Pネットを形成することになるのである。</p>
+<ol>
+<li><p>このメッセージを利用するようになる場合の最初の場合はノードが初めて起動される場合、ノードのPeerListに何もない時である。この場合ノードはブロックチェーンのSeedNodeと呼ばれるノードに接続してこのメッセージを送信する。 すなわちこのメッセージを利用して連結可能なノード情報を得てQURASブロックチェーンのP2Pネットに連結されることである。</p></li>
+<li><p>二番目の場合はノードがPeerListは持っているが、PeerListのノードの個数あるいは現在連結されているノード数が標準に連結するノード数より少ない場合である。つまり標準でノードは6台程度と連結することが必要であるが、現在ノードに接続されているノード数は2と仮定しよう。このような場合、ノードは連結している2台のノードにGetAddrメッセージを送って連結情報を確保することができる。 P2PネットのすべてのノードはGetAddrメッセージを受けると、自分に連結しているノードの情報を照会し、最新の情報を収集して送ってくれる。</p></li>
+</ol>
+<p>上記の同じ方式でQURASブロックチェーンのすべてのノードはP2Pネットに連結されてブロックチェーンを形成していくことになる。</p>
+<p>GetAddrメッセージはBody部分がない。</p>
+<p>GetAddrの応答としてAddrメッセージが受けることになる。</p>
+<h4><a class="anchor" aria-hidden="true" id="inv-command"></a><a href="#inv-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>INV Command</h4>
+<p>このメッセージはTransaction、Block、Consensusのハッシュ値を送るメッセージである。</p>
+<p>Body部分に対する項目は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Type</td><td>INVメッセージの形式を規定している項目である。<br/>0: Transaction<br/>1: Block<br/>2: Consensus</td></tr>
+<tr><td>HashList</td><td>Typeの項目に該当したHashのListを意味する。</td></tr>
+</tbody>
+</table>
+<p><center>表7. Inv Commandの項目</center> <br/></p>
+<p>上記の項目の説明は次のようである。</p>
+<ol>
+<li>Type:0の場合Mempoolメッセージの応答としてTransactionのHashをList形式にしてHash Listに入れて送ることになる。</li>
+<li>Type:1の場合GetBlocksメッセージを受けた時、回答としてブロックのStartからEndまでのブロックHash値をHash Listで作って送る。</li>
+<li>Type:2の場合Consensus Nodeの間に進行される通信で利用されることになる。</li>
+</ol>
+<p>またこのメッセージはGetDataメッセージの回答でも動作するようになる。</p>
+<h4><a class="anchor" aria-hidden="true" id="tx-command"></a><a href="#tx-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tx Command</h4>
+<p>このメッセージはGetDataメッセージの応答としてTransactionの情報を送るメッセージである。</p>
+<p>このメッセージはまたInvメッセージの応答として要請するHashのTransaction情報を送るのにも利用されるようになる。</p>
+<p>TxメッセージはBody部分としてTransactionの構造と同じである。</p>
+<p>Transactionの構造は後で具体的に言及しようにする。</p>
+<h4><a class="anchor" aria-hidden="true" id="block-command"></a><a href="#block-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Block Command</h4>
+<p>このメッセージもTxメッセージと同様にGetDataあるいはInvメッセージの要請によって伝送されるメッセージである。</p>
+<p>形式もTxメッセージと同様にGetDataあるいはInvメッセージのHashに該当したブルロク値をBody部分に入れて伝送されることとなる。</p>
+<p>Blockの構造も後で具体的に言及しようにする。</p>
+<h4><a class="anchor" aria-hidden="true" id="merkle-block-command"></a><a href="#merkle-block-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Merkle Block Command</h4>
+<p>このメッセージは当該ブロックのブロックHeader値とブロックが持っているTransaction数、そしてTransactionで作られたMerkle Tree Hash値にBody部分を形成するようになる。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Block Header</td><td>この部分は後で具体的に説明する。(リンク)</td></tr>
+<tr><td>Tx Count</td><td>ブロックに含まれているTransactionの個数を意味する。</td></tr>
+<tr><td>Hash List</td><td>TransactionにMerkle Treeを形成し、そのMerkle Treeに対する配列値である。</td></tr>
+</tbody>
+</table>
+<p><center>表8. MerkleBlock Commandの項目</center> <br/></p>
+<h4><a class="anchor" aria-hidden="true" id="consensus-command"></a><a href="#consensus-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Consensus Command</h4>
+<p>このメッセージは合意ノードの間やり取りするメッセージとして合意と関連した内容を含めている。</p>
+<p>このメッセージについては、以下の リンクを参照する。</p>
+<h4><a class="anchor" aria-hidden="true" id="headers-command"></a><a href="#headers-command" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Headers Command</h4>
+<p>このメッセージはブロックのHeader値を要請し、すなわちGetheaders Commandから要請される応答として要求するHeader情報を抽出して伝送するメッセージである。</p>
+<p>このメッセージのBody部分はブロックのHeader部分と同じであるから次のリンクを参照する。</p>
+<p>上記のようなメッセージ構造を通じてQURASブロックチェーンのすべてのノードは要求するデータの通信を行うことになる。</p>
+<h2><a class="anchor" aria-hidden="true" id="walletの構造"></a><a href="#walletの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>WALLETの構造</h2>
+<p>QURASブロックチェーンの二つの種類の提供することにコインの暗号化と透明性的な送受信を提供します。</p>
+<h3><a class="anchor" aria-hidden="true" id="transparent-walletの構造"></a><a href="#transparent-walletの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TRANSPARENT WALLETの構造</h3>
+<p>Transparent WalletはECC暗号化を利用してPrivate KeyとPublic Keyを生成してPublic KeyによってAddressを生成することになる。</p>
+<p>ここで基本重要な問題はPrivate KeyとPublic Key生成とPublic Keyからユーザたちが使用するAddressをどのように生成するのかどうか、Private KeyとAddressを利用してTransactionの検証をどのように進行するのかについて具体的に説明している。</p>
+<p>ECC暗号化(楕円曲線暗号)は楕円曲線の理論に基づく公開キー暗号化方式である。楕円曲線暗号化は他の公開キー暗号化に比べて(例えばRSA)より長さが短いキーを要求する利点がある。[1]</p>
+<p>楕円曲線暗号方式は計算複雑性の理論によって理論上有限な時間に計算が可能であるが、実際に計算するにはあまりに長い時間がかかることを利用して出た暗号化方式である。</p>
+<p>初期公開キー暗号化のRSAと同じ暗号化は2つ以上の素数に分けるのが長い時間かかるという理論的な基礎によって開発された。</p>
+<p>ECC暗号化は知られた特定した点に対する無作為楕円曲線の離散対数を探すのが時間的に長くかかるという点で作られた。</p>
+<p>暗号化の目的で楕円曲線は平面曲線の一種として次の方程式を満足する点の集合を意味する。</p>
+<p><center>x^3+ax+ b=y^2</center></p>
+<p>一般的なECC暗号化で利用される標準の楕円曲線式である。</p>
+<p>ここでQURAS Walletで利用する楕円曲線は標準として提示されているsecp256r1である。</p>
+<p>ECC暗号化については多くの文献が存在するためにここでは具体的に記述しない。</p>
+<p>QURAS WalletのPrivate Keyの長さは32byteである。</p>
+<p>このPrivate KeyはRandomで時間とデバイスなどの情報によって再度発行が不可能なアルゴリズムによりRandomで生成する。</p>
+<p>Private KeyによってPublic Keyを生成する方式は以下のようである。</p>
+<p>ECCのsecp256r1の標準でG点は次のようである。</p>
+0x036b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296
+<p>Public Keyは上記のG点とPrivate Keyから離散的に求められた値である。</p>
+<p>この時得られるPublic Keyの長さは66byteになる。</p>
+<p>この時Public Keyの初の33byteはX軸値を意味して次の33byteはY軸値を意味する。</p>
+<table>
+<thead>
+<tr><th>X Value (33byte)</th><th>Y Value (33byte)</th></tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>66 Byte</p>
+<p>この時Y値が偶数か奇数かによって次のようにScriptHashを生成する。</p>
+<p>Y値が偶数である場合にはXの初のbyteを02に設定する。</p>
+<p>Y値が奇数の場合にはXの初のbyteを03に設定する。</p>
+<p>ScriptHashを生成した次はScriptHashの長さは0x21byteである。</p>
+<p>このScriptHashの一番前byteにAddress Versionの1byteを追加してHash160を取る。</p>
+<p>そのHash160 Byte列をBase58エンコディンをすればAddressが出ている。</p>
+<p>上記に説明を図式で表現すると次のようである。</p>
+<p><center><img src="http://13.230.62.42/quras/img/whitepaper/GeneratingTransparentAddress.png" alt="/quras-js/img"></center>
+<center>図2. Transparent Addressの生成構造</center></p>
+<p>QURASブロックチェーンでWalletを話す時には基本Private Keyを意味するし、このPrivate Keyはよく保管することを勧奨する。</p>
+<p>またユーザーたちはPrivate Keyだけ保管していば様々なサービスあるいはWalletを利用してPublic KeyとAddressを手に入れることができるし、当該Addressに保管されているコインの残高を確認することができる。</p>
+<p>またAddressの暗号化アルゴリズムは引き続き発展させていくつもりであり、ユーザがさらにコイン管理を安全にできるように研究を深化させるだろう。</p>
+<h3><a class="anchor" aria-hidden="true" id="anonymous-walletの構造"></a><a href="#anonymous-walletの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ANONYMOUS WALLETの構造</h3>
+<p>Anonymous Addressには大きく二つの類型がある。</p>
+<p>Zk-Snarksを利用したAddress帯域とRing-Signatureを利用したAddressの帯域がある。</p>
+<p>先にZk-Snarksを利用したAddress帯域について見てみるようにする。</p>
+<h4><a class="anchor" aria-hidden="true" id="zk-sanrks-addressの構造"></a><a href="#zk-sanrks-addressの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ZK-SANRKS ADDRESSの構造</h4>
+<p>Anonymous walletのkeyはTransparent Keyと形式が違う。</p>
+<p>Anonymous WalletのPrivate Keyの長さは31byteである。</p>
+<p>Anonymous WalletのPrivate Keyもやはりrandom発生器によって作る31byteのrnadomのbyte列である。</p>
+<p>Anonymous WalletではPrivate KeyをSpend Keyと呼ぶ。</p>
+<p>このSpend Keyに基づいてReceiving Key、Viewing Key、Addressを生成することができる。</p>
+<p>Receiving KeyはSpend KeyのPublic Keyと見ることができる。</p>
+<p>Receiving KeyはSpend Keyからスカラー掛けを進めて得ることになるキーとしてSodiumのライブラリのcrypto_scalamult_base関数を利用して取得する。</p>
+<p>もちろんこのアルゴリズムもECCアルゴリズムを利用して行われる。</p>
+<p>Viewing KeyはSpend KeyからPRF関数を利用して作られるようになる。</p>
+<p>PRF関数は自体で定義した関数であり具体的に見るためにはソースを参照して確認できる。</p>
+<p>AddressはECCのPublic KeyとPublic EncKeyを組み合わせて構成される。</p>
+<p>Anonymous Addressの構成図は次のようである。</p>
+<h4><a class="anchor" aria-hidden="true" id="ring-signature-addressの構造"></a><a href="#ring-signature-addressの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RING SIGNATURE ADDRESSの構造</h4>
+<h2><a class="anchor" aria-hidden="true" id="transactionの構造"></a><a href="#transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TRANSACTIONの構造</h2>
+<p>QURASブロックチェーンは様々なTransactionを持っている。</p>
+<p>この部分ではQURASブロックチェーンが提供する様々なTransactionに対して具体的に記述することになる。</p>
+<p>Transactionの構造について記述する前にすべてのTransactionが共通に含めている項目と構造について説明するようにしよう。</p>
+<h3><a class="anchor" aria-hidden="true" id="transaction構造共通部"></a><a href="#transaction構造共通部" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TRANSACTION構造(共通部)</h3>
+<p>ここで言及するTransaction構造はすべての類型のTransactionが含めている構造である。</p>
+<p>今後、他のTransactionの構造を説明する時この部分についてはTransaction Fieldで表示しようとしている。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Transaction Type</td><td>TransactionのタイプとしてこのタイプによってTransactionの構造とTransactionの使命によって変更される。</td></tr>
+<tr><td>Version</td><td>この項目はTransactionのVersionを示しているところとしてTransactionの項目が更新される場合この項目の値によって処理するように設計されている。</td></tr>
+<tr><td>Transaction Attribute</td><td>Transactionの追加的な機能と関連した項目としてSmart Contractと特定Transactionで適用される。</td></tr>
+<tr><td>Coin Reference</td><td>Coin Referenceはコインを送信する場合BitcoinでUTXO情報と同じような内容として現在送っていないコインに対するTxのOut Put参照である。</td></tr>
+<tr><td>Transaction Outputs</td><td>コインの送受信で受信される側に対するTx Outputである。</td></tr>
+<tr><td>Script</td><td>Transactionの検証とSmart Contractの内容がここに入ることになる。</td></tr>
+</tbody>
+</table>
+<p><center>表9. Transactionの構造</center> <br/></p>
+<p>TransactionのTypeの項目についてみることにしよう。</p>
+<p>TransactionのTypeはQURASブロックチェーンで利用されるすべてのTransactionのタイプを含めている。</p>
+<p>Typeの項目に定義されているTransactionのタイプは次のようである。</p>
+<ul>
+<li>Miner Transaction</li>
+<li>Issue Transaction</li>
+<li>Claim Transaction</li>
+<li>Enrollment Transaction</li>
+<li>Register Transaction</li>
+<li>Contract Transaction</li>
+<li>Anonymous Transaction</li>
+<li>Publish Transaction</li>
+<li>Invocation Transaction</li>
+</ul>
+<p>上記のTransactionについては後で具体的に記述しようにする。</p>
+<h3><a class="anchor" aria-hidden="true" id="miner-transactionの構造"></a><a href="#miner-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MINER TRANSACTIONの構造</h3>
+<p>Miner TransactionはConsensus Nodeつまりブロックを生成するノードが発生するTransactionである。</p>
+<p>ここには現在ブロックに含まれたTransactionらの手数料を総合して現在ブロック生成者のアカウントに送信するTransactionと見ることができる。</p>
+<p>つまりMiner Transactionはブロック生成者がブロックを生成し、ブロックに含まれたTransactionらの手数料を計算して手数料をブロック生成者のアカウントに移すTransactionとしてブロックの初のTransactionに登録されている。</p>
+<p>Miner TransactionはTransactionの項目のほかにNonceという項目、つまりrandom値を表現する項目が追加でさらに含まれることになる。</p>
+<h3><a class="anchor" aria-hidden="true" id="issue-transactionの構造"></a><a href="#issue-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ISSUE TRANSACTIONの構造</h3>
+<p>Issue Transactionには特別な項目は存在しない。</p>
+<p>Asset作成者はIssue Transactionを通じてQURASブロックチェーンに登録されるAssetを創造することができ、全てのアドレスへ送金される。</p>
+<p>QURASブロックチェーンに発行されることになるとTransactionのFeeは0である。</p>
+<h3><a class="anchor" aria-hidden="true" id="claim-transactionの構造"></a><a href="#claim-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLAIM TRANSACTIONの構造</h3>
+<p>Claim TransactionはQURASコインの保有者がコインの持分に応じてQURAS Gas Tokenの支払を貰う時利用されるTransactionである。</p>
+<p>つまり実例としてQURASコインを保有したユーザが1000コインを保有していることとして300 QURAS Gas TokenをRewardで受ける場合、このTransactionを利用して300 QURAS Gas Tokenを受けることができる。</p>
+<p>Claim Transactionは現在のユーザのコインTransactionを分析して現在まで認められているQURAS Gas Tokenボーナスを計算してそれに対するボーナスをコイン保有者に返すTransactionである。</p>
+<p>Claim Transactionの認証過程もやはりこれについた、つまりボーナスの正確性に対する検証を行うことになる。</p>
+<p>もしボーナス検証が失敗する場合、Transactionはブロックに追加されることはできない。</p>
+<p>このTransactionはただQURASコインの保有者だけが利用できるTransactionである。</p>
+<h3><a class="anchor" aria-hidden="true" id="enrollment-transactionの構造"></a><a href="#enrollment-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ENROLLMENT TRANSACTIONの構造</h3>
+<p>このTransactionに追加される項目は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>PublicKey</td><td>検証者のPublic Keyである。</td></tr>
+</tbody>
+</table>
+<p><center>表10. Enrollment Transactionの追加項目</center> <br/></p>
+<p>このTransactionは検証者になるために発行するTransactionである。</p>
+<p>検証者になるための方法はEnrollment Trnasactionを構成してPublicKeyのアドレスに手付金を送らなければならない。</p>
+<p>登録をキャンセルする方法はPublicKeyで手付金を抜けばいい。</p>
+<h3><a class="anchor" aria-hidden="true" id="register-transactionの構造"></a><a href="#register-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>REGISTER TRANSACTIONの構造</h3>
+<p>このTransactionはQURASブロックチェーンにQURASコインやQURAS Gas Tokenといった資産を登録する時、利用されるTransactionである。</p>
+<p>つまりEthereumのERC20トークンのようなユーザ定義の資産を登録するTransactionだと思えばいい。</p>
+<p>このTransactionは資産登録Transactionとして資産情報をTransaction構造に追加されるようになる。</p>
+<p>追加される情報の項目は次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Asset Type</td><td>この項目は資産のタイプを示している項目である。</td></tr>
+<tr><td>Name</td><td>資産の名前を示している項目である。</td></tr>
+<tr><td>Amount</td><td>資産を登録する時、総発行される資産量を示している項目である。</td></tr>
+<tr><td>Precision</td><td>資産の量で小数点位を表現する際に使われる項目である。</td></tr>
+<tr><td>Owner</td><td>資産を保有するユーザの情報である。</td></tr>
+<tr><td>Admin</td><td>ScriptHashを示している項目である。</td></tr>
+</tbody>
+</table>
+<p><center>表11. 資産の登録の項目</center> <br/></p>
+<p>上記の項目により登録される資産に対する情報をブロックチェーンに登録してユーザたちが利用するようにする。</p>
+<p>つまりQURASブロックチェーンは資産登録Transactionを提供することとしてユーザたちがQURASブロックチェーンの中で自分の資産を構築して利用できるようにする。</p>
+<h3><a class="anchor" aria-hidden="true" id="contract-transactionの構造"></a><a href="#contract-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CONTRACT TRANSACTIONの構造</h3>
+<p>このTransactionは資産の送受信と関連されたTransactionである。</p>
+<p>ユーザは資産の送受信をこのTransactionを利用して行うことになる。</p>
+<p>このTransactionはTransaction共通部をそのまま利用する。</p>
+<p>それではこのTransactionを利用してどのようにユーザがコインを送信するかを見ることにしよう。</p>
+<p>ブロックチェーンは分散された共同帳簿としてブロックの集まりである。</p>
+<p>すべてのブロックはTransactionらを含めている。</p>
+<p>つまりContract Transactionもブロックに全部含まれることになる。</p>
+<p>すべてのユーザたちのコインの送受信履歴がすべて分散帳簿のブロックチェーン、より正確にブロックに含まれることになる。</p>
+<p>ブロックチェーンですべてのユーザたちはECCによって創造されたAddressに区分され、すべてのユーザたちはAddressに該当した個人Private Keyを保有している。</p>
+<p>上記でTransparent Addressの構造について言及した。</p>
+<p>ユーザはPrivate Key、Public Key、ScriptHash、Addressを持っている。</p>
+<p>ブロックチェーンにはScriptHashやAddressがデータとして保管されるようになる。</p>
+<p>Private Keyはユーザだけが別途に保管しているキーである。</p>
+<p>それでは実地のTransactionがどう生成されるのかについて実例を通じて進めることにしよう。</p>
+<p>User AからUser Bにコイン100を送るとしよう。</p>
+<p>Aには残高が200あると仮定する。</p>
+<p>Aに残高が200あるという意味はまだ送られないTransaction Outputが存在するということを意味する。</p>
+<p>それではContract TransactionにCoin Referenceの項目が存在する。</p>
+<p>この項目に対する意味下記のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>PrevHash</td><td>以前に発生したTransactionのHash値を示す。</td></tr>
+<tr><td>PrevIndex</td><td>この項目はTransactionが含んでいるTransaction Output ListのIndex値を意味する。</td></tr>
+</tbody>
+</table>
+<p><center>表12. Coin Referenceの項目</center> <br/></p>
+<p>すべてのTransactionは全部Transaction Outputの項目を持っている。</p>
+<p>Coin ReferenceはこのTransaction OutputをTransaction HashとTransaction Output ListのIndex値で指定することになる。</p>
+<p>つまりAからBにコインを送る時Coin Referenceの項目を上記のように指定している。</p>
+<p>次にBにコイン100を送る時はTransaction Outputを入れてくれなければならない。</p>
+<p>ところがCoin Referenceに200の残高が入るためにAに100、Bに100を送るようにTransaction Outputを2つの生成する。</p>
+<p>それではTransaction Outputについた項目の意味を見ることにしよう。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>AssetID</td><td>資産のIDとして実地にどの資産を送金するのかを示している項目である。</td></tr>
+<tr><td>Value</td><td>送金される量を示している項目である。</td></tr>
+<tr><td>Script Hash</td><td>コインを受けるユーザのScriptHashである。</td></tr>
+</tbody>
+</table>
+<p><center>表13. Transaction Outputの項目</center> <br/></p>
+<p>上記のような形式に合わせてCoin ReferenceとTransaction Outputの項目を入力送金すればコインが送金されることとなる。</p>
+<p>友誼内容を図式で表現すると次のようである。</p>
+<p><center><img src="http://13.230.62.42/quras/img/whitepaper/TransparentTxPrinciple.png" alt="/quras-js/img"></center>
+<center>図3. Transparent Txの原理</center></p>
+<p>すべてのコインの送金原理は上記のように進行される。</p>
+<h3><a class="anchor" aria-hidden="true" id="anonymous-transactionの構造"></a><a href="#anonymous-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ANONYMOUS TRANSACTIONの構造</h3>
+<p>Anonymous Transactionは暗号化アルゴリズムによって大きく2種類に分ける。</p>
+<h4><a class="anchor" aria-hidden="true" id="zk-snarks-anonymous-transaction"></a><a href="#zk-snarks-anonymous-transaction" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ZK-SNARKS ANONYMOUS TRANSACTION</h4>
+<p>ZK-SNARKSはZcashコインで初めて導入された暗号化モジュールである。</p>
+<p>QURASブロックチェーンではTransactionの匿名化を実現する目的でZK-SNARKSを利用してTransactionの暗号化を実現した。</p>
+<p>暗号化ブロックチェーンで基本はTransactionの検証をどのように実現するかが重要である。</p>
+<p>ZK-SNARKSを利用した匿名化Transactionではすべての取引内容が暗号化されているためにこれに対する検証方式がTransparent Transactionとは違う。</p>
+<p>まずZK-SNARKSアルゴリズムでPrivate KeyとAddress方式がTransparent Address方式と違う。</p>
+<p>暗号化アルゴリズムはECCに基礎したが、Address方式が異なる。</p>
+<p>この部分については上記で言及したためにそれを参照しようにする。</p>
+<p>暗号化Transactionということは取引内容つまり実例としてA->Bで100コインを伝送したとする時送信者、受信者、取引金額に対して暗号化を取るということを意味する。</p>
+<p>すなわち取引内容が暗号化されるために暗号化された部分に対する解釈はただZK-SNARKSのPrivate Keyを持つユーザだけができるようになる。</p>
+<p>この時Consensus NodeでTransactionの検証方式が必要になる。</p>
+<p>つまりZK-SNARKSアルゴリズムの特徴を利用してConsensus NodeではUserのPrivate Keyを全然わからなくても暗号化されたTransactionが正確だということを判断できるようになる。</p>
+<p>Anonymous Transactionは暗号化されたTransactionのByte列とその暗号化されたByte列に対するSign値とサインしたPublic Keyの項目を持っている。</p>
+<p>追加された項目を見ると次のようである。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>AnonymousTx</td><td>Transactionの暗号化されたbyte列を意味する。</td></tr>
+<tr><td>PubKey</td><td>この暗号化された項目を検証するためのPublic Keyを意味する。</td></tr>
+<tr><td>Sign</td><td>この項目はAnonymousTx byte列のHashに対するsignとしてAnonymousTxの検証をための項目である。</td></tr>
+</tbody>
+</table>
+<p><center>表14. Anonymous Transactionの追加項目</center> <br/></p>
+<p>基本的なZK-SNARKSアルゴリズムに対する説明は次を参照しようにする。</p>
+<h3><a class="anchor" aria-hidden="true" id="publish-transactionの構造"></a><a href="#publish-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PUBLISH TRANSACTIONの構造</h3>
+<p>Publish TransactionはスマートコントラクトをPublishする時利用されるTransactionとしてまだ次の段階でTransactionを追加しようとしている。</p>
+<h3><a class="anchor" aria-hidden="true" id="invocation-transactionの構造"></a><a href="#invocation-transactionの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>INVOCATION TRANSACTIONの構造</h3>
+<p>スマートコントラクトのためのTransactionである。</p>
+<p>このTransactionはスマートコントラクトを実行するためのTransactionとしてスマートコントラクトのbyte列、つまりコンパイルされたScriptを含む。</p>
+<p>このTransactionはConsensus Nodeで実行され、Scriptに反映された内容がVMで実行されて結果を戻す機能を遂行する。</p>
+<p>スマートコントラクトについては後で具体的に言及しようにする。</p>
+<h2><a class="anchor" aria-hidden="true" id="ブロックの構造"></a><a href="#ブロックの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ブロックの構造</h2>
+<p>ブロックチェーンはブロックの連結された集合と見ることができる。</p>
+<p>ブロックの構造を見る前にブロックチェーンでブロックがどのように連結されているのかについて直観的に説明しよう。</p>
+<p>ブロックチェーンでブロックの連結方式は以下のようである。</p>
+<p><center><img src="http://13.230.62.42/quras/img/whitepaper/StructureOfBlock.png" alt="/quras-js/img"></center>
+<center>図4. ブロックチェーンでブロックの連結構造</center></p>
+<p>上記のようにブロックは大きくブロックのHeader部分とブロックのBody部分からなっている。</p>
+<p>ブロックのHeader部分はブロックの情報が入っていてブロックのBody部分はTransactionの集合で構成されている。</p>
+<p>まずはブロックのHeader部分について具体的に見ることにしよう。</p>
+<h3><a class="anchor" aria-hidden="true" id="block-headerの構造"></a><a href="#block-headerの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BLOCK HEADERの構造</h3>
+<p>ブロックのHeaderにどのような項目があるかを見てそれに対する説明をすることにしよう。</p>
+<table>
+<thead>
+<tr><th>項目</th><th>説明</th></tr>
+</thead>
+<tbody>
+<tr><td>Version</td><td>ブロックのVersionを示している項目としてブロックのHeader部分が更新される場合を考慮した項目である。</td></tr>
+<tr><td>Prev Hash</td><td>この項目は以前のブロックに対するHash値を示している項目である。</td></tr>
+<tr><td>Merkle Root</td><td>ブロックのBody部分にあるTransactionのHashを葉で構成されるMerkle TreeのRoot Hash値である。</td></tr>
+<tr><td>Time Stamp</td><td>ブロックが生成された時間を示す。</td></tr>
+<tr><td>Index</td><td>現在ブロックの長さを示す。</td></tr>
+<tr><td>Consensus Data</td><td>ブロックを生成したNodeのNonce値を意味する。</td></tr>
+<tr><td>Next Consensus</td><td>次のブロックを生成する権限を持ったConsensus NodeのScriptHash値である。</td></tr>
+<tr><td>Script</td><td>ブロックに対する検証Scriptを示す。</td></tr>
+</tbody>
+</table>
+<p><center>表15. ブロックの構造</center> <br/></p>
+<p>ブロックのHeader部分にMerkle Rootという項目が存在する。</p>
+<p>この項目の意味は次のようでる。</p>
+<p>ブロックの生成子はブロックに含まれているTransactionのHash値でMerkle Treeを形成する。</p>
+<p>そしてMerkle TreeのRootHash値をこのMerkle Rootの項目に代入する。</p>
+<p>すべてのノードはブロックに含まれたTransactionの誤ったTransactionについてはMerkle Rootの計算方法により検証することができる。</p>
+<p>TransactionでどのようにMerkle Treeを構築するのかについて直観的に説明すると次のようである。</p>
+<p>実例としてブロックが7個のTransactionを持っていると仮定しよう。</p>
+<p>この7個のTransactionのHashをA、B、C、D、E、F、Gとしよう。</p>
+<p>その場合Merkle Root値は次の図のように計算されるようになる。</p>
+<p><center><img src="http://13.230.62.42/quras/img/whitepaper/MerkleRootConfiguration.png" alt="/quras-js/img"></center>
+<center>図5. MerkleRootの構成</center></p>
+<p>もし他のノードからブロックのBody部分をダウンロードする時、問題があってBody部分の内容を誤って受けた場合Body部分に対するMerkle Root値がHeader部分のMerkle Root値と変わることになる。</p>
+<p>次の図を通じて知ることができる。</p>
+<p><center><img src="http://13.230.62.42/quras/img/whitepaper/SearchingErrorsInMerkleTree.png" alt="/quras-js/img"></center>
+<center>図6. MerkleTreeのエラーの探索</center></p>
+<p>この場合どのTransactionが誤ったTransactionのかをMerkle Treeを通じて簡単に得られる。</p>
+<p>つまりノードはMerkle Treeを利用してブロックのHeaderとブロックのBodyを一つのノードがなくていろんないくつのノードからダウンロードして検証できるようになる。</p>
+<p>Merkle Rootについての文献はたくさん出ているために参考資料を参考にしてほしい。[2],[3]</p>
+<h3><a class="anchor" aria-hidden="true" id="block-bodyの構造"></a><a href="#block-bodyの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BLOCK BODYの構造</h3>
+<p>ブロックのBody部分はTransactionの集合である。</p>
+<p>Transactionすなわちすべての種類のTransactionが含まれるようになる。</p>
+<h3><a class="anchor" aria-hidden="true" id="blockの検証方式"></a><a href="#blockの検証方式" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BLOCKの検証方式</h3>
+<p>ブロックの検証方式は以下のようである。</p>
+<p>ブロック検証手続きはまずはブロックのHeader部分に対する検証を進め、その次にBody部分に対する検証を進める。</p>
+<p>ブロックHeader部に対する検証から見ることにしよう。</p>
+<h4><a class="anchor" aria-hidden="true" id="block-headerの検証"></a><a href="#block-headerの検証" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BLOCK HEADERの検証</h4>
+<p>ブロックのHeaderに対する検証手続きは以下の通りである。</p>
+<ol>
+<li>現在ブロックのHash値がGenesisブロックのHash値である場合、Trueを返還する。</li>
+<li>現在ブロックのHash値がLocalのブロックにすでに含まれたらTrueを返還する。</li>
+<li>現在ブロックのPrevHashの値に該当したブロックHeaderがLocalのブロックチェーンになければFalseを返還する。</li>
+<li>PrevHashの値に該当したブロックHeaderのIndex値が現在ブロックのIndex値より2以上の差が出る場合Falseを返還する。</li>
+<li>PrevHashの値に該当したブロックHeaderのTimestampが現在ブロックのTimestampより大きい場合Falseを返還する。</li>
+<li>最後にブロックのScriptに対する検証を進めてScriptが失敗する場合、Falseを返還する。</li>
+</ol>
+<p>ブロックのHeaderに対する検証で失敗する場合、ブロックのBodyに対する検証は進行しない。</p>
+<h4><a class="anchor" aria-hidden="true" id="block-bodyの検証"></a><a href="#block-bodyの検証" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BLOCK BODYの検証</h4>
+<p>ブロックのBodyに対する検証手続きは以下の通りである。</p>
+<ol>
+<li>Transactionのリストから最初のTransactionがMiner Transactionがなかったり、Miner Transactionが2番目index以上に位置する場合、Falseを返還する。</li>
+<li>Transactionに該当したNextConsensus項目が正確に計算できだったのかを確認してそうではない場合はFalseを返還する。</li>
+<li>TransactionらのFeeを総合した結果とMiner Transactionの金額を確認して結果が異なるとFalseを返還する。</li>
+</ol>
+<p> 上記の検証がすべて成功する場合、ノードはブロック検証で成功したと認識してブロックをLocalブロックチェーンに受け入れる。</p>
+<h2><a class="anchor" aria-hidden="true" id="smart-contractの構造"></a><a href="#smart-contractの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SMART CONTRACTの構造</h2>
+<p>スマートコントラクトの概念はNick Szaboが1994年最初に提案した概念である。従来の契約書(Contract)は書面になって契約条件を履行するには実際の人が契約書の通り遂行をしなければならないが、デジタルコマンドで契約を作成するとその条件によって契約内容を自動で実行できると主張した。</p>
+<p>デジタルとなった契約書は条件に応じた契約結果が明確で、契約内容を直ちに履行することができます。</p>
+<p>各自の資産が連結されたデジタルで両者の合意をして契約書を作成して実行することにしたら契約を実行するのに第3者の信頼機関が必要なくなる。</p>
+<p>1994年当時、デジタルスマート契約は概念として存在して実地運営サービスに導入されていなかった。</p>
+<p>ブロックチェーンの概念が登場することとしてスマートコントラクトを作ることができる環境が調うになった。</p>
+<p>QURASブロックチェーンでSmart Contractはこのようなデジタル契約のほかにもユーザたちが直接契約条件を作成して利用するように設計された。</p>
+<p>すなわちユーザたちはQURAS Smart Contract言語を利用して自分だけのSmart Contractを開発してQURASブロックチェーン上で実行させられるように全てのPlatformを提供する。</p>
+<p>それではQURASブロックチェーンのSmart Contract実行手続きを見るようにしよう。</p>
+<ol>
+<li>SmartユーザはQURASブロックチェーンで支援するSmart Contract作成言語を利用してSmart Contractを作成する。
+QURASブロックチェーンで支援するSmart Contract言語はC#である。
+ユーザたちはQURAS開発チームで支援するSmart Contract Frameworkを利用してVisual Studio環境でSmart Contractを作成することができる。</li>
+<li>Smart Contractの作成が終わったらSmart Contract Compilerを利用して該当Smart ContractをビルドしてByteコードを得る。
+QURAS開発チームは、ユーザたちがSmart Contractを自体に開発できるようにコンパイラを提供してくれる。
+ユーザたちはVisual Studio環境でQURAS Smart Contract Pluginとその他のCompilerをシステムに登録させ、使用できるようにする。</li>
+<li>ビルドしたByteコードが準備されれば、ユーザはSmart ContractをQURASブロックチェーンにDeployさせる。
+ユーザはSmart Contractを支援するWalletあるいは専用道具からビルドしたByteコードをブロックチェーンに登録させるTransactionを発生する。</li>
+<li>MinerはSmart Contract Scriptを実行させてエラーがなければQURASブロックチェーンに登録させる。
+MinerはSmart Contract Transactionが発生すると、Smart ContractのByteコードをSmart Contract VMで実行させて成功すればブロックに追加してブロックチェーンに登録されることになる。</li>
+<li>Smart ContractをDeployさせた後、ユーザはSmart Contract ScriptHashを利用して関数などを呼び出すことができる。</li>
+</ol>
+<p>スマートコントラクトの構造はQURAS Smart Contract VMで提供するOpcodeの組合として見ることができる。</p>
+<p>ユーザが作成したSmart ContractはCompileになる時、Opcodeで変化されたByteコードに変わる。</p>
+<p>QURAS開発チームはユーザにより便利なSmart Contract作成環境を用意するためにSmart Contract VMに対する更新を定期的に進めていくのである。</p>
+<p>次にSmart Contractの構造について見ることにしよう。</p>
+<p>Smart ContractはOpcodeのByte列として構造は簡単である。</p>
+<p>Byte列のすべてのOpcodeはノードのVMで解析されて実行されるようになる。</p>
+<p>Smart ContractのOpcode意味とQURAS Smart Contractのライブラリについては次を参照しようにする。</p>
+<h2><a class="anchor" aria-hidden="true" id="leveldbの構造"></a><a href="#leveldbの構造" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LEVELDBの構造</h2>
+<p>すべてのノードでブロックチェーン管理をLevelDBを利用して進行する。</p>
+<p>LevelDBは他のSQLデータベースとは違って、Key-Value形式のDBという点で、他のSQLデータベースと区別される。</p>
+<p>LevelDBはSQLとは違って、Key-Value形式の保存構造を持つ。[4][5][6]</p>
+<p>LevelDBに対する性能については以下のとおりである。</p>
+<p>一般的にSQLiteとKyoto Cabinet Tree DBと比較すると全般的に優れた性能を持っている。</p>
+<p>ただ大きなデータを使う部分では性能が落ちた結果が出た。</p>
+<p>つまりLevelDBのValueの項目の大きさが100byte程度では優れた性能が誇示された。</p>
+<p>Valueの項目がこの範囲内では性能が優れているためにLocalで利用するには適合することになる。</p>
+<p>LevelDBについて具体的に見るためにはReferenceを参照する。</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/quras-js/docs/ja/whitepaper/wp-introduction.html">← 前書き</a><a class="docs-next button" href="/quras-js/docs/ja/whitepaper/wp-consensusalgorithm.html">QURASブロックチェーンのCONSENSUS アルゴリズム →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#p2p-通信の構造">P2P 通信の構造</a><ul class="toc-headings"><li><a href="#qurasmessageの構造">QURASMESSAGEの構造</a></li></ul></li><li><a href="#walletの構造">WALLETの構造</a><ul class="toc-headings"><li><a href="#transparent-walletの構造">TRANSPARENT WALLETの構造</a></li><li><a href="#anonymous-walletの構造">ANONYMOUS WALLETの構造</a></li></ul></li><li><a href="#transactionの構造">TRANSACTIONの構造</a><ul class="toc-headings"><li><a href="#transaction構造共通部">TRANSACTION構造(共通部)</a></li><li><a href="#miner-transactionの構造">MINER TRANSACTIONの構造</a></li><li><a href="#issue-transactionの構造">ISSUE TRANSACTIONの構造</a></li><li><a href="#claim-transactionの構造">CLAIM TRANSACTIONの構造</a></li><li><a href="#enrollment-transactionの構造">ENROLLMENT TRANSACTIONの構造</a></li><li><a href="#register-transactionの構造">REGISTER TRANSACTIONの構造</a></li><li><a href="#contract-transactionの構造">CONTRACT TRANSACTIONの構造</a></li><li><a href="#anonymous-transactionの構造">ANONYMOUS TRANSACTIONの構造</a></li><li><a href="#publish-transactionの構造">PUBLISH TRANSACTIONの構造</a></li><li><a href="#invocation-transactionの構造">INVOCATION TRANSACTIONの構造</a></li></ul></li><li><a href="#ブロックの構造">ブロックの構造</a><ul class="toc-headings"><li><a href="#block-headerの構造">BLOCK HEADERの構造</a></li><li><a href="#block-bodyの構造">BLOCK BODYの構造</a></li><li><a href="#blockの検証方式">BLOCKの検証方式</a></li></ul></li><li><a href="#smart-contractの構造">SMART CONTRACTの構造</a></li><li><a href="#leveldbの構造">LEVELDBの構造</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/quras-js/" class="nav-home"><img src="/quras-js/img/logo5.png" alt="" width="400"/></a><div><h5>文書</h5><a href="/quras-js/docs/ja/installation.html">開始</a><a href="/quras-js/docs/ja/basic_sendasset.html">ガイド</a><a href="/quras-js/docs/ja/api-index.html">API参考文書</a></div><div><h5>Community</h5><a href="/quras-js/ja/users.html">ユーザーショーケース</a></div><div><h5>More</h5><a href="https://quras.io/" target="_blank">QURAS</a><a href="https://bitbucket.org/qurasblockchain/quras-js" target="_blank">BitBucket</a></div></section><a href="https://quras.io/team.html" target="_blank" class="fbOpenSource"><img src="/quras-js/img/coz_med.png" alt="Quras Dev" width="150" height="150"/></a><section class="copyright">Copyright © 2019 Quras Dev</section></footer></div></body></html>

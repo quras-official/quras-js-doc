@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Consensus algorithm for QURAS · </title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;In the blockchains, the consensus algorithm is an important indicator of the characteristics of the blockchains.&lt;/p&gt;"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Consensus algorithm for QURAS · "/><meta property="og:type" content="website"/><meta property="og:url" content="http://13.230.62.42/quras-js/index.html"/><meta property="og:description" content="&lt;p&gt;In the blockchains, the consensus algorithm is an important indicator of the characteristics of the blockchains.&lt;/p&gt;"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/quras-js/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/quras-js/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/quras-js/en"><img class="logo" src="/quras-js/img/logo5.png" alt=""/><h2 class="headerTitleWithLogo"></h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/quras-js/docs/en/installation.html" target="_self">Docs</a></li><li class=""><a href="/quras-js/docs/en/api-index.html" target="_self">API</a></li><li class="siteNavGroupActive"><a href="/quras-js/docs/en/whitepaper/wp-introduction.html" target="_self">TechnicalPaper</a></li><li class=""><a href="/quras-js/docs/en/changelog-latest.html" target="_self">Changelog</a></li><li class=""><a href="/quras-js/en/help.html" target="_self">Help</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/quras-js/img/language.svg"/>English</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/quras-js/docs/ja/whitepaper/wp-consensusalgorithm.html">日本語</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Contents</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-introduction.html">Introduction</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contents</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-blockchainstructure.html">Structure of QURAS Blockchain</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-consensusalgorithm.html">Consensus algorithm for QURAS</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-virtualmachine.html">The structure of the QURAS VM</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-cryptomodules.html">Crypto Modules</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-jsonrpc.html">JSON RPC for QURAS node</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Future Projects</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-futureservices.html">Future projects &amp; services</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Reference</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/whitepaper/wp-reference.html">Reference</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Consensus algorithm for QURAS</h1></header><article><div><span><p>In the blockchains, the consensus algorithm is an important indicator of the characteristics of the blockchains.</p>
+<p>Various consensus algorithms have entered in the history of the block.</p>
+<p>Beginning with the consensus algorithm used by Bitcoin and Ethereum, which has been implemented in the early stages of the block, many consensus algorithms, such as POS and DBFT, have emerged.</p>
+<p>In the QURAS Blockchain, the DBFT algorithm is used in the Consensus algorithm.</p>
+<p>We propose how the solution to the Byzantine General Problem applied to a blockchain system was implemented.</p>
+<p>Because there is no reliable authority in a blockchain system, it is difficult to verify the accuracy of the commands.</p>
+<p>All nodes of the system of a blockchain are connected in the P2P Method, and there is a possibility for the nodes connected to a blockchain to be connected and disconnected at any time.</p>
+<p>You can also get rid of the nodes by receiving inaccurate data, which can be caused by incorrect nodes concatenated into a blockchain.</p>
+<p>Now, let’s take a look at the Consensus Node that forms a blockchain.</p>
+<p>We cannot trust all of the nodes on the P2P network.</p>
+<p>Let's assume that the number of the Consensus Nodes is n, where f is the number of the untrustful nodes.</p>
+<p>In this case, the safety index of the blockchains is determined by n and f in the blockchain system.</p>
+<p>If f is less than (N-1) / 3 in the DBFT algorithm, then the QURAS Blockchain is safe.</p>
+<p>So let's look at the DBFT algorithm in a specific way.</p>
+<h2><a class="anchor" aria-hidden="true" id="configuring-a-quras-blockchain-system"></a><a href="#configuring-a-quras-blockchain-system" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuring A QURAS Blockchain System</h2>
+<p>The blockchain is formed such that all nodes are connected to each other in a P2P network as a distributed ledger system.</p>
+<p>All commands that occur on a node will be broadcasted to the entire P2P network and connected to the blockchain network.</p>
+<p>There are 2 large nodes here, one is a typical node, and the other is a Consensus Node.</p>
+<p>A typical node is responsible for transmitting and exchanging bookkeeping materials, i.e., accepting incoming commands and retransmitting them to other connected nodes.</p>
+<p>The Consensus Node forms and maintains the command processing and distributed ledgers raised on the entire P2P network.</p>
+<p>Therefore, the process for the data transmitted by using the digital signature proceeds here.</p>
+<p>In other words, when the Node i creates and sends a transaction, the Node i sends the transaction using and signing a Private Key. Then, the Public Key of the transaction generator can be checked to see if there is any change in the practical transaction.</p>
+<h2><a class="anchor" aria-hidden="true" id="agreement-algorithm"></a><a href="#agreement-algorithm" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Agreement Algorithm</h2>
+<p>If the number of untrustful nodes is smaller than (n-1) / 3 in the agreement algorithm, the safety of the blockchain is ensured.</p>
+<p>Here, n indicates the number of consensus nodes that maintain a blockchain.</p>
+<p>At this time, the number of untrustful nodes allowed in this system equal to f = (n-1) / 3.</p>
+<p>In fact, a node that maintains a blockchain is a Consensus Node rather than a general node.</p>
+<p>All Consensus Nodes MUST maintain a state transitions table that records the state of the current consensus.</p>
+<p>The collection of data used from the beginning of and to the end of the agreement is called the View. If the agreement does not currently reach the View, a change in the View will be requested. All Views will be incremented by 1 starting from 0 until the agreement is reached, and it will be distinguished v.</p>
+<p>All the Consensus Nodes are distinguished by a given number from 0 to n - 1.</p>
+<p>In the agreement, one node in the Consensus Node in the View will directly play a representative role and the other node will play a voter role.</p>
+<p>The selection of a representative node is carried out by the following algorithm:</p>
+<p>Let's say that the block length is h; then we will determine the representative node as p = (h - v) mod n.</p>
+<p>Here, v represents the View number.</p>
+<p>The new form will be generated by at least n - f signatures from the Consensus Node in all agreement items.</p>
+<p>Once a block has been generated, the new Consensus will be re-initiated.</p>
+<p>The general procedure of the agreement algorithm is as follows:</p>
+<h3><a class="anchor" aria-hidden="true" id="general-procedures-for-consensus-algorithms"></a><a href="#general-procedures-for-consensus-algorithms" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>General Procedures For Consensus Algorithms</h3>
+<p>The algorithm executes the block generation interval time as t by the following procedure in the standard situation.</p>
+<ol>
+<li>The node generates and signs a transaction and broadcasts it to the QURAS Blockchain.
+All Consensus Nodes inspect the transaction that is generated and store the data in their own memory area.</li>
+<li>After t hours from a previous block generation, the node that is selected as the representative node composes and sends a command to the Consensus Node, etc. (ConsensusRequest).
+Block height h, View number v, representative node number p, and block and block signature generated by p.</li>
+<li>When a node receives a command sent by a representative node (for example, if it receives the i-th node), the node sends a reply command (ConsensusResponse).
+Block height h, View number v, answer node number i, signature information for the block.</li>
+<li>If all nodes receive the signature data for a block that is at least n - f, then the block is placed in the QURAS Blockchain in a successful agreement.</li>
+<li>When all nodes receive the block information, they check the transaction contained in the block and remove them from their mempool.</li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="procedure-for-change-view"></a><a href="#procedure-for-change-view" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Procedure for Change View</h3>
+<p>The Change View is a method to change View and to re-elect the representative and to continue the agreement if the agreement is not reached in a certain period of time. </p>
+<p>There are 2 major ways to advance the Change View.</p>
+<p>In the first case, if a node is selected as a representative and sent a Consensus Request but receives a Consensus Response of less than or equal to n-f, the Change View will be performed.</p>
+<p>In the second case, if there is no consensus request for the View number v during the time 2^(v+1)*t, the Change View will be performed.</p>
+<p>So, let's take a look at the Change View process.</p>
+<ol>
+<li>k indicates the number of Change View occurrences in the View, which is set to k = 1 for the first time a Change View is called. Set it to Vk = v + k.</li>
+<li>The i-th node sends a Change View Request with the following parameters:
+Block height h, View number v, node number i, vk</li>
+<li>If the node receives a Change View Request whose parameters are the same vk as the other node (which is i) at least more than n – f, the View Change will be determined successful and set v as vk. Then, the agreement will be proceeded by v.</li>
+</ol>
+<p>If no ChangeView is performed during the time 2^(v+1)*t, k is incremented and repeated again from 2.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/quras-js/docs/en/whitepaper/wp-blockchainstructure.html">← Structure of QURAS Blockchain</a><a class="docs-next button" href="/quras-js/docs/en/whitepaper/wp-virtualmachine.html">The structure of the QURAS VM →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#configuring-a-quras-blockchain-system">Configuring A QURAS Blockchain System</a></li><li><a href="#agreement-algorithm">Agreement Algorithm</a><ul class="toc-headings"><li><a href="#general-procedures-for-consensus-algorithms">General Procedures For Consensus Algorithms</a></li><li><a href="#procedure-for-change-view">Procedure for Change View</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/quras-js/" class="nav-home"><img src="/quras-js/img/logo5.png" alt="" width="400"/></a><div><h5>Docs</h5><a href="/quras-js/docs/en/installation.html">Getting Started</a><a href="/quras-js/docs/en/basic_sendasset.html">Guides</a><a href="/quras-js/docs/en/api-index.html">API Reference</a></div><div><h5>Community</h5><a href="/quras-js/en/users.html">User Showcase</a></div><div><h5>More</h5><a href="https://quras.io/" target="_blank">QURAS</a><a href="https://bitbucket.org/qurasblockchain/quras-js" target="_blank">BitBucket</a></div></section><a href="https://quras.io/team.html" target="_blank" class="fbOpenSource"><img src="/quras-js/img/coz_med.png" alt="Quras Dev" width="150" height="150"/></a><section class="copyright">Copyright © 2019 Quras Dev</section></footer></div></body></html>

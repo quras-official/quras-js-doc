@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>連載2 - ウォレットの生成 · </title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="この連載ではどのようにQURAS用のウォレットを生成できるかについて説明する。"/><meta name="docsearch:language" content="ja"/><meta property="og:title" content="連載2 - ウォレットの生成 · "/><meta property="og:type" content="website"/><meta property="og:url" content="http://13.230.62.42/quras-js/index.html"/><meta property="og:description" content="この連載ではどのようにQURAS用のウォレットを生成できるかについて説明する。"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/quras-js/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/quras-js/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/quras-js/ja"><img class="logo" src="/quras-js/img/logo5.png" alt=""/><h2 class="headerTitleWithLogo"></h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/quras-js/docs/ja/installation.html" target="_self">文書</a></li><li class=""><a href="/quras-js/docs/ja/api-index.html" target="_self">API</a></li><li class=""><a href="/quras-js/docs/ja/whitepaper/wp-introduction.html" target="_self">テクニカルペーパー</a></li><li class=""><a href="/quras-js/docs/ja/changelog-latest.html" target="_self">Changelog</a></li><li class=""><a href="/quras-js/ja/help.html" target="_self">説明</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/quras-js/img/language.svg"/>日本語</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/quras-js/docs/en/basic_createwallet.html">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>ガイド</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/overview.html">概要</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/installation.html">インストール</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">ガイド</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_sendasset.html">連載1 - 資産送金</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/quras-js/docs/ja/basic_createwallet.html">連載2 - ウォレットの生成</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_checkbalance.html">連載3 - 残高を確認</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_sendcoin.html">連載4 - コインの送金</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_history.html">連載5 - 履歴の取得</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_claimgas.html">連載6 - ガスの請求</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_smartcontract.html">連載7 - スマートコントラクト</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_setsmartcontractenvironment.html">連載8 - C#を使用してQURASスマートコントラクトを作成する方法</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/basic_smartcontractlimitation.html">連載9 - スマートコントラクトの制限</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">連載2 - ウォレットの生成</h1></header><article><div><span><p>この連載ではどのようにQURAS用のウォレットを生成できるかについて説明する。
+QURAS用のウォレットと言うとPrivate Key, Public Key, ScriptHash, Addressを管理することを意味する。
+ブロックチェーンでウォレットの生成と管理は必須です。</p>
+<p><code>quras-js</code>モジュールを利用して便利にウォレットを生成及び管理できる。
+それではどのようにウォレットを生成して利用するかについて説明する。</p>
+<h2><a class="anchor" aria-hidden="true" id="ウォレットの生成"></a><a href="#ウォレットの生成" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ウォレットの生成</h2>
+<p><code>quras-js</code>でウォレット管理用のクラスを提供する。
+それではどのようにウォレットを生成することができるのか実例を通じて説明する。</p>
+<pre><code class="hljs css languages- js">  <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Quras <span class="hljs-keyword">from</span> <span class="hljs-string">'quras-js'</span>
+  <span class="hljs-keyword">const</span> myAccount = <span class="hljs-keyword">new</span> Quras.wallet.Account()
+
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Private Key : '</span> + myAccount.privateKey) <span class="hljs-comment">// 生成されたPrivate Keyを表示する。</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Public Key : '</span> + myAccount.publicKey) <span class="hljs-comment">// 生成されたPublic Keyを表示する。</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Address : '</span> + myAccount.address) <span class="hljs-comment">// 生成されたアドレスを表示する。</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Script Hash : '</span> + myAccount.scriptHash) <span class="hljs-comment">// 生成されたscriptHashを表示する。</span>
+</code></pre>
+<p>上記の実例のようにウォレットのアドレスを生成して管理することができる。</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/quras-js/docs/ja/basic_sendasset.html">← 連載1 - 資産送金</a><a class="docs-next button" href="/quras-js/docs/ja/basic_checkbalance.html">連載3 - 残高を確認 →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#ウォレットの生成">ウォレットの生成</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/quras-js/" class="nav-home"><img src="/quras-js/img/logo5.png" alt="" width="400"/></a><div><h5>文書</h5><a href="/quras-js/docs/ja/installation.html">開始</a><a href="/quras-js/docs/ja/basic_sendasset.html">ガイド</a><a href="/quras-js/docs/ja/api-index.html">API参考文書</a></div><div><h5>Community</h5><a href="/quras-js/ja/users.html">ユーザーショーケース</a></div><div><h5>More</h5><a href="https://quras.io/" target="_blank">QURAS</a><a href="https://bitbucket.org/qurasblockchain/quras-js" target="_blank">BitBucket</a></div></section><a href="https://quras.io/team.html" target="_blank" class="fbOpenSource"><img src="/quras-js/img/coz_med.png" alt="Quras Dev" width="150" height="150"/></a><section class="copyright">Copyright © 2019 Quras Dev</section></footer></div></body></html>

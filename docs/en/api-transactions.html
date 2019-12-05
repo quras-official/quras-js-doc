@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Transactions · </title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="The Transactions module is exposed as:"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Transactions · "/><meta property="og:type" content="website"/><meta property="og:url" content="http://13.230.62.42/quras-js/index.html"/><meta property="og:description" content="The Transactions module is exposed as:"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/quras-js/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/quras-js/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/quras-js/en"><img class="logo" src="/quras-js/img/logo5.png" alt=""/><h2 class="headerTitleWithLogo"></h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/quras-js/docs/en/installation.html" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/quras-js/docs/en/api-index.html" target="_self">API</a></li><li class=""><a href="/quras-js/docs/en/whitepaper/wp-introduction.html" target="_self">TechnicalPaper</a></li><li class=""><a href="/quras-js/docs/en/changelog-latest.html" target="_self">Changelog</a></li><li class=""><a href="/quras-js/en/help.html" target="_self">Help</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/quras-js/img/language.svg"/>English</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/quras-js/docs/ja/api-transactions.html">日本語</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Modules</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-index.html">API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Modules</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-wallet.html">Wallet</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/quras-js/docs/en/api-transactions.html">Transactions</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-rpc.html">RPC</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-sc.html">Smart Contract</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-api.html">API</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-u.html">Utility</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-CONST.html">Constants</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-settings.html">Settings</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/en/api-logging.html">Logging</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Transactions</h1></header><article><div><span><p>The Transactions module is exposed as:</p>
+<pre><code class="hljs css languages- js"><span class="hljs-keyword">import</span> QurasLib <span class="hljs-keyword">from</span> <span class="hljs-string">'quras-js'</span>
+<span class="hljs-keyword">let</span> transaction1 = QurasLib.create.claimTx(...args)
+transaction1 = QurasLib.sign.transaction(transaction1, privateKey)
+<span class="hljs-keyword">let</span> serialized1 = QurasLib.serialize.tx(transaction1)
+<span class="hljs-keyword">let</span> txid1 = QurasLib.get.transactionHash(transaction1)
+
+<span class="hljs-keyword">import</span> { tx } <span class="hljs-keyword">from</span> <span class="hljs-string">'quras-js'</span>
+<span class="hljs-keyword">let</span> transaction2 = tx.createClaimTx(...args)
+transaction2 = tx.signTransaction(transaction2, privateKey)
+<span class="hljs-keyword">let</span> serialized2 = tx.serializeTransaction(transaction2)
+<span class="hljs-keyword">let</span> txid2 = tx.getTransactionHash(transaction2)
+</code></pre>
+<p>Transactions form the core of the interaction with the blockchain. In order to effect any state changes on the chain, a transaction is required to be sent and processed into a block by the consensus nodes.</p>
+<h2><a class="anchor" aria-hidden="true" id="classes"></a><a href="#classes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Classes</h2>
+<h3><a class="anchor" aria-hidden="true" id="transaction"></a><a href="#transaction" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Transaction</h3>
+<p>The Transaction class is a wrapper class that contains all the tools required to manipulate and build transactions. This allows us to dynamically add intents, remarks at will instead of cramming everything into a single method.</p>
+<pre><code class="hljs css languages- js"><span class="hljs-keyword">import</span> QurasLib <span class="hljs-keyword">from</span> <span class="hljs-string">'quras-js'</span>
+<span class="hljs-comment">// Let us create a ContractTransaction</span>
+<span class="hljs-keyword">let</span> tx = QurasLib.create.tx({<span class="hljs-attr">type</span>: <span class="hljs-number">128</span>})
+<span class="hljs-comment">// Now let us add an intention to send 1 QRS to someone</span>
+tx
+.addOutput(<span class="hljs-string">'QRS'</span>,<span class="hljs-number">1</span>,someAddress)
+.addRemark(<span class="hljs-string">'I am sending 1 QRS to someAddress'</span>) <span class="hljs-comment">// Add an remark</span>
+.calculate(balance) <span class="hljs-comment">// Now we add in the balance we retrieve from an external API and calculate the required inputs.</span>
+.sign(privateKey) <span class="hljs-comment">// Sign with the private key of the balance</span>
+
+<span class="hljs-keyword">const</span> hash = tx.hash <span class="hljs-comment">// Store the hash so we can use it to query a block explorer.</span>
+
+<span class="hljs-comment">// Now we can use this serializedTx string and send it through sendrawtransaction RPC call.</span>
+<span class="hljs-keyword">const</span> serializedTx = tx.serialize()
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="methods"></a><a href="#methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
+<h3><a class="anchor" aria-hidden="true" id="components"></a><a href="#components" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Components</h3>
+<p>Transactions are composed of the following parts:</p>
+<ol>
+<li>Type</li>
+</ol>
+<p>This determines the transaction type. This determines how the transaction is serialized or deserialized. Currently, the library only support the following types:</p>
+<ol>
+<li><p>Contract</p></li>
+<li><p>Claim</p></li>
+<li><p>Invocation</p></li>
+<li><p>AnonymousContract</p></li>
+<li><p>Version</p></li>
+</ol>
+<p>This determines the version of the transaction. Protocol may defer for different versions.</p>
+<ol start="3">
+<li>Attribute</li>
+</ol>
+<p>Extra attributes that are attached to the transaction. An example is a Remark.</p>
+<ol start="4">
+<li>Input</li>
+</ol>
+<p>The inputs of the transaction. This is the assets being 'spent' by this transaction. System fees are also included here. Inputs are considered 'spent' after the transaction is processed.</p>
+<ol start="5">
+<li>Output</li>
+</ol>
+<p>The outputs of the transaction. This indicates the unspent assets created by this transaction. These outputs are 'unspent' and can be referenced as inputs in future transactions.</p>
+<ol start="6">
+<li>Witness</li>
+</ol>
+<p>The witnesses to the transaction. These are the signatures to authorise the transaction. Usually the private key of the owner of the input assets is used to generate the signature.</p>
+<ol start="7">
+<li>Exclusive Data (unique to each transaction type)</li>
+</ol>
+<p>Various data required for each transaction. For example, a ClaimTransaction will have the <code>claims</code> field which contains all claimable transactions. An InvocationTransaction will have the <code>script</code> field instead for smart contract invocation.</p>
+<h2><a class="anchor" aria-hidden="true" id="fees"></a><a href="#fees" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fees</h2>
+<p>Attaching fees is supported as the last argument in both creating transactions and also calculating. Fees work by having more QRG inputs than outputs. The difference between the inputs and the outputs are taken as fees. Fees first contribute towards system fees (eg. transaction costs, etc). Any excess will be considered as network fees and are used to prioritise transactions.</p>
+<pre><code class="hljs css languages- js"><span class="hljs-keyword">import</span> {tx} <span class="hljs-keyword">from</span> <span class="hljs-string">'quras-js'</span>
+
+<span class="hljs-comment">// This attaches a fee of 1 QRG.</span>
+tx.Transaction.createContractTx(balances, intents, {}, <span class="hljs-number">1</span>)
+
+<span class="hljs-comment">// Another way is to attach fees on calculation</span>
+<span class="hljs-keyword">var</span> newTx = <span class="hljs-keyword">new</span> tx.Transaction()
+newTx.addIntent({})
+.calculate(balance, <span class="hljs-literal">null</span>, <span class="hljs-number">1</span>)
+
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/quras-js/docs/en/api-wallet.html">← Wallet</a><a class="docs-next button" href="/quras-js/docs/en/api-rpc.html">RPC →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#classes">Classes</a><ul class="toc-headings"><li><a href="#transaction">Transaction</a></li></ul></li><li><a href="#methods">Methods</a><ul class="toc-headings"><li><a href="#components">Components</a></li></ul></li><li><a href="#fees">Fees</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/quras-js/" class="nav-home"><img src="/quras-js/img/logo5.png" alt="" width="400"/></a><div><h5>Docs</h5><a href="/quras-js/docs/en/installation.html">Getting Started</a><a href="/quras-js/docs/en/basic_sendasset.html">Guides</a><a href="/quras-js/docs/en/api-index.html">API Reference</a></div><div><h5>Community</h5><a href="/quras-js/en/users.html">User Showcase</a></div><div><h5>More</h5><a href="https://quras.io/" target="_blank">QURAS</a><a href="https://bitbucket.org/qurasblockchain/quras-js" target="_blank">BitBucket</a></div></section><a href="https://quras.io/team.html" target="_blank" class="fbOpenSource"><img src="/quras-js/img/coz_med.png" alt="Quras Dev" width="150" height="150"/></a><section class="copyright">Copyright © 2019 Quras Dev</section></footer></div></body></html>

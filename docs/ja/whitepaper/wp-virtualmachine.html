@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>QURASブロックチェーンのVIRTUAL MACHINEの構造 · </title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;QURASブロックチェーンはSmart Contractを実行するためにエンジンにVirtual Machineを持っている。&lt;/p&gt;"/><meta name="docsearch:language" content="ja"/><meta property="og:title" content="QURASブロックチェーンのVIRTUAL MACHINEの構造 · "/><meta property="og:type" content="website"/><meta property="og:url" content="http://13.230.62.42/quras-js/index.html"/><meta property="og:description" content="&lt;p&gt;QURASブロックチェーンはSmart Contractを実行するためにエンジンにVirtual Machineを持っている。&lt;/p&gt;"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/quras-js/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/quras-js/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/quras-js/ja"><img class="logo" src="/quras-js/img/logo5.png" alt=""/><h2 class="headerTitleWithLogo"></h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/quras-js/docs/ja/installation.html" target="_self">文書</a></li><li class=""><a href="/quras-js/docs/ja/api-index.html" target="_self">API</a></li><li class="siteNavGroupActive"><a href="/quras-js/docs/ja/whitepaper/wp-introduction.html" target="_self">テクニカルペーパー</a></li><li class=""><a href="/quras-js/docs/ja/changelog-latest.html" target="_self">Changelog</a></li><li class=""><a href="/quras-js/ja/help.html" target="_self">説明</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/quras-js/img/language.svg"/>日本語</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/quras-js/docs/en/whitepaper/wp-virtualmachine.html">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Contents</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-introduction.html">前書き</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contents</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-blockchainstructure.html">QURASブロックチェーンの構造</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-consensusalgorithm.html">QURASブロックチェーンのCONSENSUS アルゴリズム</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-virtualmachine.html">QURASブロックチェーンのVIRTUAL MACHINEの構造</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-cryptomodules.html">QURASブロックチェーンの暗号化モジュール</a></li><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-jsonrpc.html">QURASブロックチェーンのJSON-RPC</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Future Projects</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-futureservices.html">FUTUREのプロジェクトおよびサビース</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Reference</h3><ul><li class="navListItem"><a class="navItem" href="/quras-js/docs/ja/whitepaper/wp-reference.html">参照</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">QURASブロックチェーンのVIRTUAL MACHINEの構造</h1></header><article><div><span><p>QURASブロックチェーンはSmart Contractを実行するためにエンジンにVirtual Machineを持っている。</p>
+<p>ここではQURASブロックチェーンのVirtual Machineの構造について見ることにしよう。</p>
+<p>Virtual Machineについて見る前にSmart Contract参照して欲しい。</p>
+<p>Smart ContractはOpcodeのByte列で構成されている。</p>
+<p>またユーザたちはSmart ContractをC#を利用して作成してSmart Contract Compilerを利用してOpcodeの列であるByteコードを得ることになる。</p>
+<p>まずはSmart Contract Compilerについて見ることにしよう。</p>
+<h2><a class="anchor" aria-hidden="true" id="smart-contract-compiler"></a><a href="#smart-contract-compiler" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Smart Contract Compiler</h2>
+<p>Smart Contract Compilerはユーザが作成したSmart Contractコード(ユーザLevelのC#コード)QURASブロックチェーンのVMで実行できるOPCODEの列であるScriptコードに変換させる役割を遂行する。</p>
+<p>ユーザたちはSmart ContractをQURASブロックチェーンで提供するFrameworkを利用して開発し、そのコードをVMで認識できるScriptに変換させる役割をこのSmart Contract Compilerを利用してすることができる。</p>
+<h2><a class="anchor" aria-hidden="true" id="opcode"></a><a href="#opcode" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Opcode</h2>
+<p>QURAS Smart Contract Virtual Machinは次のようなOpcode Setを提供する。</p>
+<p>VMで提供するOpcode内容は大きく次のようである。</p>
+<ul>
+<li>文字列関連のOpcodeの集まり
+文字列関連処理などを提供する。</li>
+<li>スタックの操作と関連したOpcodeの集まり
+CやC++で提供するスタックの操作のような命令を提供する。</li>
+<li>Process操作と関連したOpcodeの集まり
+If、forと同じような命令を提供する。</li>
+<li>定数関連のOpcodeの集まり
+Constのような命令を提供する。</li>
+<li>算術演算と関連したOpcodeの集まり
++、-、*、/のような算術演算と関連した命令を提供する。</li>
+<li>暗号化と関連したOpcodeの集まり
+ユーザたちが暗号化を利用できるようにECDSA、SHAと他のさまざまなアルゴリズムを利用できるように提供する。</li>
+<li>データの構造と関連したOpcodeの集まり
+このOpcode関連命令には配列と複雑な形の資料の構造を定義できるように提供する。</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="opcode-fee"></a><a href="#opcode-fee" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Opcode Fee</h2>
+<p>手数料には2つの方式のFeeが存在する。</p>
+<p>その二つの点について見ることとしよう。</p>
+<h3><a class="anchor" aria-hidden="true" id="deployment-fee"></a><a href="#deployment-fee" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deployment Fee</h3>
+<p>QURASブロックチェーンでユーザたちはSmart Contractで提供する保存スペースを利用して様々なサービスを開発利用できる。</p>
+<p>その時保存スペースに対する使用は無料ではない。</p>
+<p>QURASブロックチェーンでユーザたちはSmart Contractを作成してそれをブロックチェーンにDeployさせてユーザがその内容を利用できるようにする。</p>
+<p>ユーザたちはSmart ContractをDeployさせる時保存スペースとSystem Callなどについて手数料を支払わなければならない。</p>
+<p>つまりDeployment FeeはSmart ContractをDeployさせる際に利用される手数料である。</p>
+<h3><a class="anchor" aria-hidden="true" id="implementation-fee"></a><a href="#implementation-fee" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Implementation Fee</h3>
+<p>QURASはSmart Contractに対する安全的な実行環境を用意してすべてのノードからSmart Contractに対する結果がすべてのノードで同一に得られるように設計されてすべてのノードはスマートコントラクトを実行するためにfeeを払わなければならない。</p>
+<p>また手数料はSmart Contractの計算ロジックつまりOpcodeについて決定されることになり、単位はQurasToken単位である。</p>
+<p>もしFeeが不足すればSmart Contractは失敗することになる。</p>
+<p>すべてのユーザたちはQurasToken 10に該当したSmart Contractについた無料で利用できる。</p>
+<h2><a class="anchor" aria-hidden="true" id="vmの機能"></a><a href="#vmの機能" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>VMの機能</h2>
+<p>QURASブロックチェーンでSmart Contract実行結果はすべてのノードで一致しなければならない。</p>
+<p>もしSmart Contractの実行結果がノードによって変わったらTransactionに対する検証結果と合意を進めることができなくなる。</p>
+<p>この時C、C++や体系CPUの形式によって実行結果が違うことが存在する。</p>
+<p>またシステムが32bitのか64bitのかによってintとようなデータの大きさが変わることとして計算結果が変わる可能性もある場合が存在する。</p>
+<p>しかしQURASブロックチェーンのSmart Contractの実行結果はすべてのノードすなわちどのようなCPU、OS環境に関係なく同一の結果を出さなければならない。</p>
+<p>ブロックチェーンはすべてのノードの同一状態のブロックチェーン帳簿によって運営されるためにノードに存在するブロックのデータが変われば、ブロックチェーンを維持することはできない。</p>
+<p>このような問題点としてQURASブロックチェーンのSmart Contract VMはすべての環境で同じ入力に対して同一の結果物を出るように設計されなければならない。</p>
+<p>つまりQURASブロックチェーンは一貫性の特徴を持たなければならない。</p>
+<p>それではQURASブロックチェーンで一貫性の特徴について見ることにしよう。</p>
+<p>一貫性ではじめは時間である。</p>
+<p>すべてのノードはブロックの合意でブロックにTimeStampのような項目が存在する。</p>
+<p>もしSmart Contractに時間関連関数を利用する時ノードから得られる時間が全て差があれば、結果は変わることになるだろう。</p>
+<p>つまりQURASブロックのチェーンに参加したノードの時間同期化は必須である。</p>
+<p>これからQURASブロックチェーンに参加するすべてのノードはシステムの時間同期化を進めた状態で連結することを要求しており、それによってQURASブロックチェーンに連結されるように設計した。</p>
+<p>こうすることによってSmart Contractで時間同期の問題を解決した。</p>
+<p>次はランスの発生と関連した問題である。</p>
+<p>ランスの発生はすべてのノードによってお互いに異なる結果を発生させることができる。</p>
+<p>分散されたネットワークでこのような問題を解決するために出た方法がランスの発生にSeedの概念を導入することである。</p>
+<p>つまりSeedを導入して同じのSeedに限って同じ結果が出るように設計されたランス発生器を利用してブロックチェーンで同期化を実現することができる。</p>
+<p>QURASブロックチェーンではブロックのHash値をSeedで利用してランス発生器を利用することになる。</p>
+<p>また提起れる可能性がある問題はSmart Contractで利用される保存スペースのデータに対する一貫性を保障することである。</p>
+<p>QURASブロックチェーンでは分散帳簿を利用しているのでデータに対する決定性はすべてのノードで同じである。</p>
+<p>またSmart Contractの保存スペースに保存されたデータはただContractのみがアクセスすることができるものとして決定論的だと見ることができる。</p>
+<p>これにしてブロックチェーンで発生するすべてのノードの状態はすべて同一に管理できるようになる。</p>
+<h2><a class="anchor" aria-hidden="true" id="smart-contractの類型"></a><a href="#smart-contractの類型" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SMART CONTRACTの類型</h2>
+<p>QURASブロックチェーンで提供するSmart Contract類型には実行方式によって次のように分けられる。</p>
+<h3><a class="anchor" aria-hidden="true" id="verification-contract"></a><a href="#verification-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Verification Contract</h3>
+<p>QURASブロックチェーンを見ると他のビットコインのようにpublic-keyによって管理されるアドレス方式ではなくContractアドレス方式を利用する。</p>
+<p>QURASブロックチェーンでは全てのアドレスはScriptHashによって生成される。</p>
+<p>ScriptHashはSignコードを検証できるOpcodeのロジックが入っている。</p>
+<p>QURASブロックチェーンのアドレスはこのScriptHashによって作られるようになり、アドレスの帯域も一つのContractと見ることができる。</p>
+<p>つまり一般的なコイン伝送を見れば一つのContractで見られるし、Transactionが発生すればSignの検証をScriptHashのOpcodeを実行して進行するようになっている。</p>
+<p>こうしたContractをVerification Contractと呼ぶが、これの入力としてSign値とScriptHash値が入って戻す値ではただBool型としてtrueとfalseの間の一つの値を持つ。</p>
+<p>つまりこのようなContractは戻す値の結果によってtrueの場合はブロックチェーンに入ってfalseの場合は失敗で認めてTransactionがなくなっている。</p>
+<h3><a class="anchor" aria-hidden="true" id="application-contract"></a><a href="#application-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Application Contract</h3>
+<p>このTransactionはQURASブロックチェーンのSmart Contractで一番多く利用されるContractである。</p>
+<p>このTransactionは特定のTransactionによって実行されるが実行されながらシステムの状態に対するアクセスと更新を進めることができるし、またContract Storageの値を変更し、照会することができる。</p>
+<p>Application ContractはTransactionを発生した場合、Contract ScriptによってFeeを払わなければならず、Feeが足りない場合Application Contractは失敗に終わることになる。</p>
+<h3><a class="anchor" aria-hidden="true" id="function-contract"></a><a href="#function-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Function Contract</h3>
+<p>Smart Contractを作成するときにユーザは他のContractで呼び出すことができるように関数をPublic型とすることができる。</p>
+<p>このような場合利用できるContractとしてFunction Contractが存在する。</p>
+<p>つまりSmart ContractユーザたちはすでにDeployされたSmart ContractのFunctionを呼び出す時、そういうContractを使用することになる。</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/quras-js/docs/ja/whitepaper/wp-consensusalgorithm.html">← QURASブロックチェーンのCONSENSUS アルゴリズム</a><a class="docs-next button" href="/quras-js/docs/ja/whitepaper/wp-cryptomodules.html">QURASブロックチェーンの暗号化モジュール →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#smart-contract-compiler">Smart Contract Compiler</a></li><li><a href="#opcode">Opcode</a></li><li><a href="#opcode-fee">Opcode Fee</a><ul class="toc-headings"><li><a href="#deployment-fee">Deployment Fee</a></li><li><a href="#implementation-fee">Implementation Fee</a></li></ul></li><li><a href="#vmの機能">VMの機能</a></li><li><a href="#smart-contractの類型">SMART CONTRACTの類型</a><ul class="toc-headings"><li><a href="#verification-contract">Verification Contract</a></li><li><a href="#application-contract">Application Contract</a></li><li><a href="#function-contract">Function Contract</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/quras-js/" class="nav-home"><img src="/quras-js/img/logo5.png" alt="" width="400"/></a><div><h5>文書</h5><a href="/quras-js/docs/ja/installation.html">開始</a><a href="/quras-js/docs/ja/basic_sendasset.html">ガイド</a><a href="/quras-js/docs/ja/api-index.html">API参考文書</a></div><div><h5>Community</h5><a href="/quras-js/ja/users.html">ユーザーショーケース</a></div><div><h5>More</h5><a href="https://quras.io/" target="_blank">QURAS</a><a href="https://bitbucket.org/qurasblockchain/quras-js" target="_blank">BitBucket</a></div></section><a href="https://quras.io/team.html" target="_blank" class="fbOpenSource"><img src="/quras-js/img/coz_med.png" alt="Quras Dev" width="150" height="150"/></a><section class="copyright">Copyright © 2019 Quras Dev</section></footer></div></body></html>
